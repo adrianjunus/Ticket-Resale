@@ -26,8 +26,10 @@ def create_app():
     db.init_app(app)
 
     with app.app_context():
-        from . import models
+        from app import models
+        print("Creating all tables...")
         db.create_all()
+        print("Tables:", db.metadata.tables.keys())  # Check recognized tables
 
         # Import and register the blueprint
         from .routes import main
