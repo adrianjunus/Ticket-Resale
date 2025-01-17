@@ -1,1 +1,17 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Flask instance folder
+instance/
+
+# SQLite database files
+*.db
+
+# Environment variables
+.env
+.env.*
+
+# Virtual environments
 blog_env/
