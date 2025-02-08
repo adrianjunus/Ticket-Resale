@@ -3,13 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ posts.title }}</title>
+    <title>Blog Home</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            max-width: 800px;
+        }
+        .post {
+            border-bottom: 1px solid #ddd;
+            padding: 15px 0;
+        }
+        .post h2 {
+            margin: 0;
+        }
+        .post-meta {
+            color: #777;
+            font-size: 14px;
+        }
+        a {
+            text-decoration: none;
+            color: #007bff;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-    <h1>{{ posts.title }}</h1>
-    <p>By {{ posts.username }}</p>
-    <div>
-        {{ posts.content|safe }}
-    </div>
+
+    <h1>My Blog</h1>
+
+    {% if posts %}
+        {% for post in posts %}
+        <div class="post">
+            <h2><a href="{{ url_for('main.view_post', id=post.id) }}">{{ post.title }}</a></h2>
+            <p class="post-meta">Posted on {{ post.created_at.strftime('%Y-%m-%d') }}</p>
+            <p>{{ post.content[:200] }}...</p>  <!-- Display first 200 characters -->
+            <a href="{{ url_for('main.view_post', id=post.id) }}">Read more</a>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p>No posts yet. <a href="{{ url_for('main.create_post') }}">Write one!</a></p>
+    {% endif %}
+
 </body>
 </html>

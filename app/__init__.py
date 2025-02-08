@@ -2,6 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 import markdown
 import bleach
+import os
 
 db = SQLAlchemy()
 
@@ -20,8 +21,8 @@ def render_markdown(content):
 
 def create_app():
     app = Flask(__name__)
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'
-    app.config['SECRET_KEY'] = '484a39b31541d7ff986208822cfcf09e'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'  # Relative path keeps it in instance/
+    app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'fallback-secret-key')
 
     db.init_app(app)
 
