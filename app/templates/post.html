@@ -4,14 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ post.title }}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
+    {% extends "base.html" %}
 
-    <h1>{{ post.title }}</h1>
-    <p><i>Posted on {{ post.created_at.strftime('%Y-%m-%d') }}</i></p>
-    <p>{{ post.content }}</p>
-
-    <a href="{{ url_for('main.index') }}">Back to Home</a>
-
+    {% block title %}{{ post.title }} - My Blog{% endblock %}
+    
+    {% block content %}
+    <div class="container mt-5">
+        <a href="{{ url_for('main.index') }}" class="btn btn-outline-secondary mb-3">⬅ Back to Home</a>
+    
+        <div class="card p-4">
+            <h1 class="mb-3">{{ post.title }}</h1>
+            <p class="text-muted">Posted on {{ post.created_at.strftime('%Y-%m-%d') }}</p>
+            <p class="lead">{{ post.content }}</p>
+        </div>
+    </div>    
+    {% endblock %}
 </body>
 </html>
