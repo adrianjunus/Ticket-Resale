@@ -14,4 +14,4 @@ instance/
 .env.*
 
 # Virtual environments
-blog_env/
+ticket_env/
