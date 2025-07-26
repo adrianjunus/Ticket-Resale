@@ -3,6 +3,7 @@
 from flask import Flask, request, jsonify
 import stripe
 import uuid
+from .models import Ticket
 from datetime import datetime, timedelta
 
 app = Flask(__name__)
