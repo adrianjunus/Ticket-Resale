@@ -1,39 +1,27 @@
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-import markdown
-import bleach
-import os
+# Ticket Resale P2P Platform - Flask Backend Scaffold
 
-db = SQLAlchemy()
+from flask import Flask, request, jsonify
+import stripe
+import uuid
+from datetime import datetime, timedelta
 
-ALLOWED_TAGS = [
-    'a', 'b', 'i', 'u', 'strong', 'em', 'p', 'ul', 'ol', 'li',
-    'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'pre', 'code', 'blockquote'
-]
-ALLOWED_ATTRIBUTES = {
-    'a': ['href', 'title'],
-}
+app = Flask(__name__)
 
-def render_markdown(content):
-    html = markdown.markdown(content, extensions=['extra'])
-    sanitized_html = bleach.clean(html, tags=ALLOWED_TAGS, attributes=ALLOWED_ATTRIBUTES, strip=True)
-    return sanitized_html
+# === Configuration ===
+stripe.api_key = 'sk_test_...'
+endpoint_secret = 'whsec_...'
 
-def create_app():
-    app = Flask(__name__)
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'  # Relative path keeps it in instance/
-    app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'fallback-secret-key')
+# Simulated in-memory storage (replace with DB in production)
+tickets = {}
+users = {}
+ticket_resales = {}
+notifications = []
 
-    db.init_app(app)
+# === Simulated Data ===
+users['alice@example.com'] = {"user_id": "u1", "email": "alice@example.com"}
+users['bob@example.com'] = {"user_id": "u2", "email": "bob@example.com"}
+tickets['t1'] = Ticket(ticket_id='t1', event_name='Indie Fest 2025', owner_id='u1')
 
-    with app.app_context():
-        from app import models
-        print("Creating all tables...")
-        db.create_all()
-        print("Tables:", db.metadata.tables.keys())  # Check recognized tables
-
-        # Import and register the blueprint
-        from .routes import main
-        app.register_blueprint(main)
-
-    return app
+# === Run Server ===
+if __name__ == '__main__':
+    app.run(debug=True, port=5000)
